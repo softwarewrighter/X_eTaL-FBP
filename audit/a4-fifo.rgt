@@ -1,0 +1,2 @@
+command = "../scripts/xt run a4-fifo.xtl"
+exit_code = 0

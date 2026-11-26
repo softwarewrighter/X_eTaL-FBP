@@ -1,0 +1,10 @@
+#!/usr/bin/env xetal
+# A9: drawing a run: occupancy per tick as bars in text (Plot's b_ars)
+# and as a chart, a picture written by []S_HOW (here only its size is
+# printed; the picture goes to work/draw).
+"p:" u_se< "Plot"
+occ := 4 8 12 16 16 16
+("t1" "t2" "t3" "t4" "t5" "t6") p:b_ars occ
+_ := ("queue occupancy" "second" "IPs") p:c_hart! e_nclose occ
+q := 2 5 r_eshape 1 1 1 0 0  1 0 0 0 0
+s_hape []G_RID q

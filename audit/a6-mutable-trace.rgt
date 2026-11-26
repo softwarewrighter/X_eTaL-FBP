@@ -1,0 +1,2 @@
+command = "../scripts/xt run a6-mutable-trace.xtl"
+exit_code = 0

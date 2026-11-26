@@ -1,0 +1,15 @@
+#!/usr/bin/env xetal
+# A2: components as boxed pure step functions of one type,
+# (state, input) -> (state, output), held in a vector and applied in a
+# loop: the scheduler needs no dispatch on a kind.
+u:g_en := { (s, x) -> (s + 1, s) }
+u:d_bl := { (s, x) -> (s, x * 2) }
+u:a_cc := { (s, x) -> (s + x, s + x) }
+procs := (e_nclose 'u:g_en) c_at (e_nclose 'u:d_bl) c_at e_nclose 'u:a_cc
+u:p_ipe := { st x k ->
+  k > t_ally procs ? x
+  (s2, y) := (d_isclose k s_elect procs)_ (k s_elect st, x)
+  ((st a_mend (k, s2)) u:p_ipe y)_ k + 1
+}
+((10 0 0) u:p_ipe 0)_ 1
+t_ally procs

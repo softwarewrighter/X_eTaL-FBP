@@ -1,0 +1,19 @@
+## A8: a macro reading a connection line of a network text,
+## "a.OUT -> b.IN [4]", into its parts when the program is compiled,
+## refusing a line that is not one (the shape n_etwork< will take).
+## Names with m: are macros; those under h: are private to this file.
+
+"t:" u_se< "Strings"
+
+## The words of a connection line, brackets and dots taken as spaces.
+h:w_ords := { t -> t:w_ords '{ c -> (c m_ember? ".[]") ? f_irst " "; c } e_ach t }
+
+## "a.OUT -> b.IN [4]" a8:c_onn< @: the line as a strand of its five
+## words, from-process, from-port, to-process, to-port and capacity.
+## takes: text @
+m:c_onn< := { t @ ->
+  w := h:w_ords t
+  6 != t_ally w ? "bad-connection left" []R_EJECT "write a.PORT -> b.PORT [capacity]"
+  "->" m_atch d_isclose 3 s_elect w ? "\"" c_at (d_isclose 1 s_elect w) c_at "\" \"" c_at (d_isclose 2 s_elect w) c_at "\" \"" c_at (d_isclose 4 s_elect w) c_at "\" \"" c_at (d_isclose 5 s_elect w) c_at "\" \"" c_at (d_isclose 6 s_elect w) c_at "\""
+  "bad-connection left" []R_EJECT "the arrow is ->"
+}

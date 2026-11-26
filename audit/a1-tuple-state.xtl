@@ -1,0 +1,11 @@
+#!/usr/bin/env xetal
+# A1: a tuple of arrays as the state of a loop, with p_ower and with
+# recursion: the shape a scheduler's state takes (queues, counts, tick).
+u:s_tep := { (q, dropped, t) ->
+  q2 := q c_at t
+  over := 0 m_ax (t_ally q2) - 3
+  (over d_rop q2, dropped + over, t + 1)
+}
+5 'u:s_tep p_ower (0 r_eshape 0, 0, 1)
+u:r_un := { s n -> n = 0 ? s; (u:s_tep s) u:r_un n - 1 }
+(0 r_eshape 0, 0, 1) u:r_un 5

@@ -1,0 +1,2 @@
+command = "../scripts/xt run a2-boxed-functions.xtl"
+exit_code = 0

@@ -376,7 +376,7 @@ Read before working:
 - `docs/plan.md` -- architecture decisions (F1-F12), the acceptance
   tests taken from the research, the saga roadmap, open questions
 - `docs/xetal-asks.md` -- what this repository needs from X_eTaL
-- `docs/audit.md` (once written) -- what the known-good X_eTaL can do
+- `docs/audit.md` -- what the known-good X_eTaL can do
   for FBP
 - `docs/research.pdf` -- the archival design conversation, text AND
   diagrams, NOT normative

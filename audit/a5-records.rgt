@@ -1,0 +1,2 @@
+command = "../scripts/xt run a5-records.xtl"
+exit_code = 1

@@ -1,0 +1,6 @@
+#!/usr/bin/env xetal
+# A3: how deep a self-call may go: a run of a million ticks is a loop
+# by recursion (there is no while), so it must not overflow the stack.
+u:c_ount := { n acc -> n = 0 ? acc; (n - 1) u:c_ount acc + 1 }
+100000 u:c_ount 0
+1000000 u:c_ount 0

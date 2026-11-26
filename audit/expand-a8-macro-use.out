@@ -1,0 +1,8 @@
+#!/usr/bin/env xetal
+# A8: a .xtlm macro reads "a.OUT -> b.IN [4]" when the program is
+# compiled, with X_eTaL-libraries' Strings at the pin (a8-macro.xtlm).
+"nm:" u_se< "a8-macro.xtlm"
+c := ("gen" "OUT" "dbl" "IN" "4")
+c
+t_ally c
+

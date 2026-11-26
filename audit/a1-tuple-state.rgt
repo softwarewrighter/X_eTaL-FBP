@@ -1,0 +1,2 @@
+command = "../scripts/xt run a1-tuple-state.xtl"
+exit_code = 0

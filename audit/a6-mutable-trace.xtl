@@ -1,0 +1,12 @@
+#!/usr/bin/env xetal
+# A6: collecting a trace as the program runs: a ! variable grows by
+# c_at (an effect, so the function is named with !), against the pure
+# way, the trace returned as part of the state.
+trace! := 0 3 r_eshape 0
+u:l_og! := { row -> trace! := trace! c_at 1 3 r_eshape row; @ }
+_ := u:l_og! 1 1 7
+_ := u:l_og! 1 2 7
+trace!
+u:p_ure := { (t, tr) -> (t + 1, tr c_at 1 3 r_eshape t c_at 9 9) }
+(_, tr) := 2 'u:p_ure p_ower (1, 0 3 r_eshape 0)
+tr

@@ -11,6 +11,7 @@ cd "$root"
 "$root/scripts/libraries.sh" >/dev/null
 echo "ok: xetal $(cut -c1-7 XETAL_COMMIT), libraries $(cut -c1-7 LIBRARIES_COMMIT)"
 "$root/scripts/test-libs.sh"
+"$root/scripts/test-audit.sh"
 for m in libs/*/src/*.xtlm; do
   [ -e "$m" ] || continue
   "$root/scripts/xt" type "$m" >/dev/null || { "$root/scripts/xt" type "$m"; echo "FAIL: $m"; exit 1; }

@@ -1,0 +1,2 @@
+command = "../scripts/xt run a9-drawing.xtl"
+exit_code = 0

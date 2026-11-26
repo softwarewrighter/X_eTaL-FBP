@@ -1,0 +1,8 @@
+#!/usr/bin/env xetal
+# A7: X_eTaL-libraries at the pin: Graphs finds a feedback loop (a node
+# that reaches itself) in a network's adjacency matrix, Check reports.
+"g:" u_se< "Graphs"
+"ch:" u_se< "Check"
+m := 4 g:a_djacency 2 4 r_eshape 1 2 3 3  2 3 2 4
+r := g:r_each m
+"2 and 3 form a loop" ch:t_est 0 1 1 0 ch:i_s '{ i -> i s_elect i s_elect r } e_ach r_ange 4

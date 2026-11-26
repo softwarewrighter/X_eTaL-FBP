@@ -1,0 +1,2 @@
+command = "../scripts/xt run a8-macro-use.xtl"
+exit_code = 0

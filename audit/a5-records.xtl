@@ -1,0 +1,8 @@
+#!/usr/bin/env xetal
+# A5 (ask X1): a packet as a record with named parts, and its kind as
+# a closed set of variants, are not in the language yet: a tuple has
+# no names, so a packet is positions in a tuple or columns of a table.
+p := (1, 2, 42.5)
+(id, kind, payload) := p
+payload
+r := (id: 1, kind: 2)

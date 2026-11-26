@@ -1,0 +1,2 @@
+command = "../scripts/xt run a7-libraries.xtl"
+exit_code = 0

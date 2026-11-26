@@ -1,0 +1,5 @@
+error[record-field]: `id:` names a record field, and tuples have no fields (records come later)
+ --> a5-records.xtl:8:7
+  |
+8 | r := (id: 1, kind: 2)
+  |       ^^^

@@ -84,8 +84,8 @@ step ends with the gate passing, docs updated, a detailed commit to
 
 | # | Step | What |
 | - | ---- | ---- |
-| 1 | setup | Repository scaffolding after X_eTaL-libraries: CLAUDE.md/AGENTS.md with the agentrail briefing, README with copyright and license, CHANGES.md, justfile and scripts (pinned xetal and libraries, reg-rs tests, gate, spelling), this plan, the asks file, the saga. |
-| 2 | capability-audit | `docs/audit.md`: probe the known-good X_eTaL for every FBP need (tuples as loop state, boxes of functions, deep recursion, ring buffers by amend, records and sums, streams, effects, macros, drawing), with a small program per finding; record asks. |
+| 1 | setup (done) | Repository scaffolding after X_eTaL-libraries: CLAUDE.md/AGENTS.md with the agentrail briefing, README with copyright and license, CHANGES.md, justfile and scripts (pinned xetal and libraries, reg-rs tests, gate, spelling), this plan, the asks file, the saga. |
+| 2 | capability-audit (done) | `docs/audit.md`: probe the known-good X_eTaL for every FBP need (tuples as loop state, boxes of functions, deep recursion, ring buffers by amend, records and sums, streams, effects, macros, drawing), with a small program per finding; record asks. |
 | 3 | connections | `libs/Connections`: a bounded FIFO as an array, offer and take, occupancy, the four overflow policies, counts of admitted, blocked and dropped IPs; the p. 47 backpressure acceptance as a test and a demo. |
 | 4 | packets | `libs/Packets`: the IP table, create, send, receive and drop with ownership checked (an IP never in two places, never lost), bracket IPs marking substreams. |
 | 5 | networks | `libs/Networks`: processes, ports and connections as tables; validation (endpoints exist, an output feeds an input, capacity positive, every required port connected, an input fed once); the adjacency matrix, reachability, feedback loops (X_eTaL-libraries' Graphs); the p. 52 network as a test. |

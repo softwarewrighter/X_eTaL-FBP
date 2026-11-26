@@ -1,0 +1,5 @@
+error[bad-connection]: the arrow is ->
+ --> a8-macro-refused.xtl:2:6
+  |
+2 | c := "gen.OUT => dbl.IN [4]" nm:c_onn< @
+  |      ^^^^^^^^^^^^^^^^^^^^^^^

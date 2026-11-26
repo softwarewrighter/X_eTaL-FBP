@@ -1,6 +1,6 @@
 number = 2
 slug = "capability-audit"
-status = "pending"
+status = "in-progress"
 description = "Write docs/audit.md: probe the known-good X_eTaL (bin/xetal at XETAL_COMMIT) ..."
 role = "production"
 context_files = []
