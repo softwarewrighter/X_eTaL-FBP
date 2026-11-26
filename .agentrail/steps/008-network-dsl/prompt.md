@@ -1,0 +1,1 @@
+Add the n_etwork< macro (a .xtlm beside libs/Networks): the port-level text of docs/research.pdf p. 52 (process lines, 'a.OUT -> b.IN [64]' connection lines) becomes the Networks tables when the program is compiled; a misspelled process or port, a missing capacity or a duplicate connection is refused there with []R_EJECT. Expansion baselines pinned. Gate passes, commit, push.

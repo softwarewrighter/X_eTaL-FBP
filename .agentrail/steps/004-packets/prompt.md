@@ -1,0 +1,1 @@
+Create libs/Packets (alias ip:): the information-packet table (id, kind as an Int code until ask X1, payload, owner, creation tick), create, send to a connection, receive, drop, with ownership checked (an IP is in exactly one place; a lost or duplicated IP is an error), and bracket IPs (open, close) delimiting substreams. Tests, demo, docs page. Gate passes, commit, push.

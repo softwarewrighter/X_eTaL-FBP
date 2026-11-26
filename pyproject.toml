@@ -1,0 +1,6 @@
+[project]
+name = "xetal-fbp-scripts"
+version = "0.0.0"
+description = "Python tooling for X_eTaL-FBP (scripts/*.py): stdlib only, no dependencies yet."
+requires-python = ">=3.11"
+dependencies = []

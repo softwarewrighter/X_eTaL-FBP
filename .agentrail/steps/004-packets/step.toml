@@ -1,0 +1,8 @@
+number = 4
+slug = "packets"
+status = "pending"
+description = "Create libs/Packets (alias ip:): the information-packet table (id, kind as an..."
+role = "production"
+context_files = []
+created_at = "2026-11-25T16:20:49"
+commits = []

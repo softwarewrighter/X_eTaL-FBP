@@ -1,0 +1,8 @@
+number = 9
+slug = "explorer-cli"
+status = "pending"
+description = "The Classical FBP Explorer on the command line (docs/research.pdf p. 71): Gen..."
+role = "production"
+context_files = []
+created_at = "2026-11-25T16:20:49"
+commits = []

@@ -1,0 +1,8 @@
+number = 3
+slug = "connections"
+status = "pending"
+description = "Create libs/Connections (alias cn:) with just new-lib: a bounded FIFO connect..."
+role = "production"
+context_files = []
+created_at = "2026-11-25T16:20:49"
+commits = []

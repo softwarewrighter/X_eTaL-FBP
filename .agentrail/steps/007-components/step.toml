@@ -1,0 +1,8 @@
+number = 7
+slug = "components"
+status = "pending"
+description = "Create libs/Components (alias co:): the first standard components (generate, ..."
+role = "production"
+context_files = []
+created_at = "2026-11-25T16:20:49"
+commits = []

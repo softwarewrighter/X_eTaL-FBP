@@ -1,0 +1,1 @@
+Create libs/Components (alias co:): the first standard components (generate, map, filter, collect, copy, merge, router, batch, throttle), each tested alone and inside a network run by the Scheduler. Tests, demos, docs page. Gate passes, commit, push.

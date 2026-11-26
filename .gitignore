@@ -1,0 +1,36 @@
+# cargo (any future Rust workspace shares ./target via .cargo/config.toml)
+/target/
+**/target/
+**/*.rs.bk
+
+# agentrail raw session transcripts (large, local only)
+.agentrail/sessions/*.jsonl
+.agentrail-archive/*/sessions/*.jsonl
+
+# Claude Code local state (shared slash commands may live in .claude/commands/)
+.claude/*
+!.claude/commands/
+
+# editors and OS
+.idea/
+.vscode/
+*.swp
+*~
+.DS_Store
+
+# local scratch and test output: X_eTaL is cloned into work/xetal and
+# X_eTaL-libraries into work/libraries (scripts/xetal.sh,
+# scripts/libraries.sh); pictures drawn by tests go to work/draw
+/tmp/
+work/
+bin/xetal
+
+# uv-managed Python venv for scripts/*.py (never system python; uv.lock is tracked)
+.venv/
+__pycache__/
+
+# the built site, when there is one: published as the gh-pages branch, never tracked on main
+/pages/
+
+# reg-rs: .rgt + .out/.err baselines are committed; .tdb* files are caches
+libs/*/tests/*.tdb*

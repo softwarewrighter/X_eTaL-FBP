@@ -1,0 +1,8 @@
+number = 8
+slug = "network-dsl"
+status = "pending"
+description = "Add the n_etwork< macro (a .xtlm beside libs/Networks): the port-level text o..."
+role = "production"
+context_files = []
+created_at = "2026-11-25T16:20:49"
+commits = []
