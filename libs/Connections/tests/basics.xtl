@@ -1,0 +1,24 @@
+#!/usr/bin/env xetal
+# Connections: sending, receiving, occupancy and counts.
+# Run with "just run Connections basics".
+"cn:" u_se< "Connections"
+"ch:" u_se< "Check"
+c := cn:n_ew (5, cn:Block)
+"a new connection is empty" ch:t_est 1 ch:i_s cn:e_mpty? c
+(c1, back) := c cn:s_end 1 2 3
+cn:d_escribe c1
+"all three fit" ch:t_est 0 ch:i_s t_ally back
+"queued oldest first" ch:t_est 1 2 3 ch:i_s cn:c_ontents c1
+(c2, got) := 2 cn:r_eceive c1
+"the oldest two come out first" ch:t_est 1 2 ch:i_s got
+"one left" ch:t_est 1 ch:i_s cn:o_ccupancy c2
+(c3, got3) := 9 cn:r_eceive c2
+"asking for more than is queued gives what is there" ch:t_est 1 3 ch:i_s (t_ally got3) c_at got3
+"now empty" ch:t_est 1 ch:i_s cn:e_mpty? c3
+"counts: admitted blocked rejected dropped delivered" ch:t_est 3 0 0 0 3 ch:i_s cn:c_ounts c3
+"room is the capacity less the occupancy" ch:t_est 2 ch:i_s cn:r_oom c1
+"utilization" ch:t_est 0.6 ch:i_s cn:u_tilization c1
+(c4, _) := c cn:s_end 1 2 3 4 5
+"full" ch:t_est 1 ch:i_s cn:f_ull? c4
+(c5, got5) := 0 cn:r_eceive c4
+"receiving none" ch:t_est 0 5 ch:i_s (t_ally got5) c_at cn:o_ccupancy c5

@@ -19,11 +19,23 @@ names its neighbors, and a full connection holds its producer back
 The networks run in a deterministic simulator first: every run is
 repeatable, so a run is a test and its trace can be replayed.
 
+## Libraries
+
+| Library | Alias | What |
+| ------- | ----- | ---- |
+| [Connections](libs/Connections/README.md) | `cn:` | bounded connections: a FIFO of IPs with a capacity and an overflow policy (block, drop oldest, drop newest, reject), and the producer-consumer backpressure experiment |
+
+```
+"cn:" u_se< "Connections"
+(c, back) := (cn:n_ew (5, cn:Block)) cn:s_end 1 2 3
+cn:d_escribe c                     # 3 of 5 slots occupied
+```
+
 ## Status
 
-Early. The repository is set up; the first libraries (bounded
-connections, packets, networks, the scheduler, standard components)
-follow in order. [`docs/plan.md`](docs/plan.md) has the architecture
+Early. Bounded connections are done; packets, networks, the
+scheduler, standard components, a network notation and the first
+explorer follow in order. [`docs/plan.md`](docs/plan.md) has the architecture
 decisions and the roadmap, [`docs/xetal-asks.md`](docs/xetal-asks.md)
 what this repository needs from X_eTaL.
 
@@ -39,6 +51,20 @@ what this repository needs from X_eTaL.
 Dependencies point one way: X_eTaL-microservices may depend on
 X_eTaL-FBP, never the other way, and X_eTaL-FBP depends only on
 X_eTaL and X_eTaL-libraries.
+
+## Using these libraries from another repository
+
+A downstream repository (X_eTaL-microservices, say) uses X_eTaL-FBP
+the way this repository uses X_eTaL-libraries: it tracks a known-good
+commit of X_eTaL-FBP in a file of its own, clones X_eTaL-FBP at that
+commit into a gitignored work directory (see `scripts/libraries.sh`
+here for the script), and puts each `libs/<Name>/src` of the clone on
+`XETAL_PATH`. Then `"cn:" u_se< "Connections"` imports a library under
+an alias of its choice. Use the same X_eTaL commit as this
+repository's `XETAL_COMMIT` (or a later one the baselines pass on),
+and put X_eTaL-libraries' `libs/<Name>/src` (at this repository's
+`LIBRARIES_COMMIT`) on the path as well, after X_eTaL-FBP's: the
+libraries here may import them.
 
 ## Layout
 

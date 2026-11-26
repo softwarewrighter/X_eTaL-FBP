@@ -1,0 +1,5 @@
+policy      admitted blocked rejected dropped delivered
+Block      112 32 0 0 96
+DropOldest 144 0 0 32 96
+DropNewest 112 0 0 32 96
+Reject     112 0 32 0 96

@@ -1,0 +1,23 @@
+#!/usr/bin/env xetal
+# Connections: the backpressure experiment of the research (p. 47): a
+# producer offering 12 IPs a second into a connection of capacity 16,
+# a consumer taking 8 a second, for 12 seconds.
+# Run with "just run Connections backpressure".
+"cn:" u_se< "Connections"
+"ch:" u_se< "Check"
+(c, t) := (12, 8, 12) cn:r_un cn:n_ew (16, cn:Block)
+t
+occ := 6 s_elect_2 t
+"full by second 4" ch:t_est 4 8 12 16 16 16 16 16 16 16 16 16 ch:i_s occ
+"32 offered IPs not admitted" ch:t_est 32 ch:i_s '+ r_/ 4 s_elect_2 t
+"blocked, so counted blocked" ch:t_est 32 ch:i_s 2 s_elect cn:c_ounts c
+"utilization 100%" ch:t_est 1.0 ch:i_s cn:u_tilization c
+"the consumer kept up: 8 a second" ch:t_est 96 ch:i_s '+ r_/ 5 s_elect_2 t
+(c2, t2) := (12, 8, 12) cn:r_un cn:n_ew (32, cn:Block)
+"a larger capacity delays saturation" ch:t_est 8 ch:i_s f_irst w_here 32 = 6 s_elect_2 t2
+"but does not remove the mismatch" ch:t_est 16 ch:i_s '+ r_/ 4 s_elect_2 t2
+(c3, t3) := (12, 8, 12) cn:r_un cn:n_ew (16, cn:DropOldest)
+"DropOldest admits everything" ch:t_est 0 ch:i_s '+ r_/ 4 s_elect_2 t3
+"and drops 32 queued IPs instead" ch:t_est 32 ch:i_s 4 s_elect cn:c_ounts c3
+(c4, t4) := (6, 8, 5) cn:r_un cn:n_ew (16, cn:Block)
+"a consumer faster than its producer keeps it empty" ch:t_est 0 0 0 0 0 ch:i_s 6 s_elect_2 t4

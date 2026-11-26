@@ -1,0 +1,15 @@
+#!/usr/bin/env xetal
+# The four overflow policies side by side: the same 12-second
+# experiment (12 IPs a second in, 8 out, capacity 16) under each.
+# Block and Reject admit the same IPs (Block's producer keeps the rest,
+# Reject's are refused); DropNewest loses the new IPs that do not fit,
+# DropOldest admits everything and loses queued ones instead.
+# Run with "just demo Connections policies".
+"cn:" u_se< "Connections"
+names := "Block" "DropOldest" "DropNewest" "Reject"
+_ := p_rint! "policy      admitted blocked rejected dropped delivered"
+u:r_ow! := { p ->
+  (c, _) := (12, 8, 12) cn:r_un cn:n_ew (16, p)
+  p_rint! (11 t_ake d_isclose p s_elect names) c_at f_ormat cn:c_ounts c
+}
+_ := 'u:r_ow! m_ap cn:Block c_at cn:DropOldest c_at cn:DropNewest c_at cn:Reject

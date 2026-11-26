@@ -1,0 +1,141 @@
+## Connections: bounded connections between FBP processes -- a FIFO of
+## information packets with a fixed capacity and an overflow policy.
+## Import it with an alias of your choice: "cn:" u_se< "Connections".
+## Put libs/Connections/src on XETAL_PATH ("just eval" does); the reference is libs/Connections/docs.
+## Names with l: are exported; those under h: are private to this file.
+##
+## A connection is a tuple (capacity, policy, contents, counts):
+## contents are the queued IPs' ids, oldest first, and counts how many
+## IPs it has admitted, blocked, rejected, dropped and delivered. A
+## connection is a value: sending and receiving give a new one.
+
+### Overflow policies
+
+## Block the producer: the IPs that do not fit stay with it
+## (backpressure, the default of classical FBP).
+l:Block := 1
+
+## Drop the oldest queued IPs to make room for the new ones.
+l:DropOldest := 2
+
+## Drop the new IPs that do not fit.
+l:DropNewest := 3
+
+## Refuse the IPs that do not fit: they go back to the producer as
+## refused, for it to deal with.
+l:Reject := 4
+
+## No IPs: an empty vector of ids.
+h:none := 0 r_eshape 0
+
+### Making one
+
+## cn:n_ew (capacity, policy): an empty connection; a capacity below 1
+## is error[bad-capacity], a policy not one of the four
+## error[bad-policy].
+l:n_ew := { (cap, pol) ->
+  cap < 1 ? "bad-capacity" []S_IGNAL @ f_ormat< "a connection's capacity is 1 or more, not {cap}"
+  (pol < 1) | pol > 4 ? "bad-policy" []S_IGNAL @ f_ormat< "a policy is cn:Block, cn:DropOldest, cn:DropNewest or cn:Reject (1 to 4), not {pol}"
+  (cap, pol, h:none, 0 0 0 0 0)
+}
+
+### Looking at one
+
+## cn:c_apacity c: how many IPs c holds at most.
+l:c_apacity := { (cap, _, _, _) -> cap }
+
+## cn:p_olicy c: c's overflow policy, 1 to 4.
+l:p_olicy := { (_, pol, _, _) -> pol }
+
+## cn:c_ontents c: the queued IPs, oldest first.
+l:c_ontents := { (_, _, q, _) -> q }
+
+## cn:c_ounts c: how many IPs c has admitted, blocked, rejected,
+## dropped and delivered, in that order.
+l:c_ounts := { (_, _, _, k) -> k }
+
+## cn:o_ccupancy c: how many IPs are queued.
+l:o_ccupancy := { (_, _, q, _) -> t_ally q }
+
+## cn:r_oom c: how many more IPs fit.
+l:r_oom := { (cap, _, q, _) -> cap - t_ally q }
+
+## cn:e_mpty? c: whether nothing is queued.
+l:e_mpty? := { c -> 0 = l:o_ccupancy c }
+
+## cn:f_ull? c: whether nothing more fits.
+l:f_ull? := { c -> 0 = l:r_oom c }
+
+## cn:u_tilization c: the share of the capacity in use, 0.0 to 1.0.
+l:u_tilization := { c -> (l:o_ccupancy c) / l:c_apacity c }
+
+## cn:d_escribe c: "3 of 5 slots occupied".
+l:d_escribe := { c -> @ f_ormat< "{l:o_ccupancy c} of {l:c_apacity c} slots occupied" }
+
+### Sending and receiving
+
+## (i, n) h:a_dd k: the counts k with n added to count i.
+h:a_dd := { (i, n) k -> k + n * i = r_ange 5 }
+
+## The send of DropOldest: every IP admitted, the oldest dropped until
+## the newest fit.
+h:o_ldest := { (cap, pol, q, k) ips ->
+  all := q c_at ips
+  over := 0 m_ax (t_ally all) - cap
+  k2 := (4, over) h:a_dd (1, t_ally ips) h:a_dd k
+  ((cap, pol, over d_rop all, k2), h:none)
+}
+
+## c cn:s_end ips: (c, back), c with the IPs ips offered in order. What
+## does not fit depends on the policy: under cn:Block it is back, still
+## the producer's; under cn:Reject it is back, refused; under
+## cn:DropNewest it is dropped; under cn:DropOldest everything is
+## admitted and the oldest queued IPs are dropped instead. back is
+## empty except under cn:Block and cn:Reject.
+l:s_end := { (cap, pol, q, k) ips ->
+  pol = l:DropOldest ? (cap, pol, q, k) h:o_ldest ips
+  fit := (t_ally ips) m_in cap - t_ally q
+  out := fit d_rop ips
+  k2 := (1, fit) h:a_dd k
+  pol = l:DropNewest ? ((cap, pol, q c_at fit t_ake ips, (4, t_ally out) h:a_dd k2), h:none)
+  j := 3 - pol = l:Block                      # 2 blocked, 3 rejected
+  ((cap, pol, q c_at fit t_ake ips, (j, t_ally out) h:a_dd k2), out)
+}
+
+## n cn:r_eceive c: (c, ips), the oldest n queued IPs delivered (all
+## of them when fewer are queued) and c without them.
+l:r_eceive := { n (cap, pol, q, k) ->
+  m := n m_in t_ally q
+  ((cap, pol, m d_rop q, (5, m) h:a_dd k), m t_ake q)
+}
+
+### A producer, a connection and a consumer
+
+## One second of cn:r_un: the consumer takes what is queued, the
+## producer offers its rate (the IPs it holds back first, then new
+## ones), and the consumer takes what arrived, up to its rate in all.
+## A row of the table: second, offered, admitted, not admitted,
+## delivered, occupancy.
+h:s_econd := { (rate, take) (c, held, next, rows) ->
+  fresh := next + o_ffsets rate - t_ally held
+  offered := held c_at fresh
+  (c1, got1) := take l:r_eceive c
+  (c2, back) := c1 l:s_end offered
+  (c3, got2) := (take - t_ally got1) l:r_eceive c2
+  ad := (1 s_elect l:c_ounts c3) - 1 s_elect l:c_ounts c
+  dl := (t_ally got1) + t_ally got2
+  row := (1 + t_ally rows) c_at (t_ally offered) c_at ad c_at ((t_ally offered) - ad) c_at dl c_at l:o_ccupancy c3
+  keep := (t_ally back) * (l:p_olicy c3) = l:Block
+  (c3, keep t_ake back, next + t_ally fresh, rows c_at 1 6 r_eshape row)
+}
+
+## (rate, take, seconds) cn:r_un c: (c, table), a producer offering
+## rate IPs a second into c and a consumer taking up to take a second,
+## run for that many seconds. A blocked producer keeps the IPs that did
+## not fit and offers them first the next second, so it never holds
+## more than rate. The table has a row per second: second, offered,
+## admitted, not admitted, delivered, occupancy at its end.
+l:r_un := { (rate, take, secs) c ->
+  (c2, _, _, rows) := secs '{ s -> (rate, take) h:s_econd s } p_ower (c, h:none, 1, 0 6 r_eshape 0)
+  (c2, rows)
+}

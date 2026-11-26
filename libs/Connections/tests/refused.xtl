@@ -1,0 +1,5 @@
+#!/usr/bin/env xetal
+# Connections: a capacity below 1 is refused (its own error, stopping
+# the program). Run with "just run Connections refused".
+"cn:" u_se< "Connections"
+cn:d_escribe cn:n_ew (0, cn:Block)

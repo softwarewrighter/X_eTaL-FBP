@@ -86,7 +86,7 @@ step ends with the gate passing, docs updated, a detailed commit to
 | - | ---- | ---- |
 | 1 | setup (done) | Repository scaffolding after X_eTaL-libraries: CLAUDE.md/AGENTS.md with the agentrail briefing, README with copyright and license, CHANGES.md, justfile and scripts (pinned xetal and libraries, reg-rs tests, gate, spelling), this plan, the asks file, the saga. |
 | 2 | capability-audit (done) | `docs/audit.md`: probe the known-good X_eTaL for every FBP need (tuples as loop state, boxes of functions, deep recursion, ring buffers by amend, records and sums, streams, effects, macros, drawing), with a small program per finding; record asks. |
-| 3 | connections | `libs/Connections`: a bounded FIFO as an array, offer and take, occupancy, the four overflow policies, counts of admitted, blocked and dropped IPs; the p. 47 backpressure acceptance as a test and a demo. |
+| 3 | connections (done) | `libs/Connections`: a bounded FIFO as an array, offer and take, occupancy, the four overflow policies, counts of admitted, blocked and dropped IPs; the p. 47 backpressure acceptance as a test and a demo. |
 | 4 | packets | `libs/Packets`: the IP table, create, send, receive and drop with ownership checked (an IP never in two places, never lost), bracket IPs marking substreams. |
 | 5 | networks | `libs/Networks`: processes, ports and connections as tables; validation (endpoints exist, an output feeds an input, capacity positive, every required port connected, an input fed once); the adjacency matrix, reachability, feedback loops (X_eTaL-libraries' Graphs); the p. 52 network as a test. |
 | 6 | scheduler | `libs/Scheduler`: components as boxed step functions, IIPs, end of stream, a deterministic tick (each eligible process runs once, in a fixed order), the run's trace as a table (tick, process, event, IP), termination and a deadlock report (no process can run while IPs wait). |
@@ -117,12 +117,27 @@ the interface X_eTaL-microservices needs (agreed with that repository:
 components, IPs, ports, connections, networks; deployment boundaries
 stay there).
 
+## When X_eTaL-microservices can build on this
+
+Each library is usable from the commit that adds it (README, "Using
+these libraries from another repository"): Connections now. What a
+service layer needs to build on is a network it can run: Networks
+(step 5), the Scheduler (step 6) and the standard Components (step 7)
+make the first usable foundation, the network notation (step 8) the
+convenient one, and the end of Saga 1 (step 9) the point where the
+interface (components, IPs, ports, connections, networks, a run and
+its trace) is documented as the one X_eTaL-microservices should
+target. Interface changes after that are recorded in CHANGES.md and
+called out to that repository.
+
 ## Open questions
 
 - Payload types: numbers only until ask X1 (algebraic data) lands, or
   boxed text as well in the meantime?
-- Time: one tick per scheduler round, or rates in IPs per second with
-  a fixed tick length (the p. 47 experiment is per second)?
+- Time: rates in IPs per second with a fixed tick of one second
+  (taken as the default at step 3: within a second producer and
+  consumer work concurrently, so a consumer takes what arrives that
+  second, which reproduces the p. 47 numbers exactly).
 - Library names and aliases: `Connections` (`cn:`), `Packets` (`ip:`),
   `Networks` (`nw:`), `Scheduler` (`sc:`), `Components` (`co:`) are
   proposed; none collides with X_eTaL's standard libraries or

@@ -1,0 +1,19 @@
+#!/usr/bin/env xetal
+# Backpressure: a producer offering 12 IPs a second into a connection
+# of capacity 16, drained by a consumer taking 8 a second. The
+# connection fills by second 4; from then on 4 IPs a second are not
+# admitted and stay with the blocked producer. A larger capacity only
+# delays this. Run with "just demo Connections backpressure".
+"cn:" u_se< "Connections"
+"p:" u_se< "Plot"
+u:s_how! := { cap ->
+  (c, t) := (12, 8, 12) cn:r_un cn:n_ew (cap, cn:Block)
+  _ := p_rint! @ f_ormat< "capacity {cap}: {cn:d_escribe c} at the end, {'+ r_/ 4 s_elect_2 t} offered IPs not admitted"
+  _ := p_rint! "second offered admitted not-admitted delivered occupancy"
+  _ := p_rint! t
+  _ := p_rint! ('{ s -> "s" c_at f_ormat s } m_ap 1 s_elect_2 t) p:b_ars 6 s_elect_2 t
+  6 s_elect_2 t
+}
+a := u:s_how! 16
+b := u:s_how! 32
+_ := ("queue occupancy, producer 12/s, consumer 8/s" "second" "IPs queued" "capacity 16" "capacity 32") p:c_hart! (e_nclose a) c_at e_nclose b

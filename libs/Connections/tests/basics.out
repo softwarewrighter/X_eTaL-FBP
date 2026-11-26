@@ -1,0 +1,13 @@
+ok: a new connection is empty
+3 of 5 slots occupied
+ok: all three fit
+ok: queued oldest first
+ok: the oldest two come out first
+ok: one left
+ok: asking for more than is queued gives what is there
+ok: now empty
+ok: counts: admitted blocked rejected dropped delivered
+ok: room is the capacity less the occupancy
+ok: utilization
+ok: full
+ok: receiving none

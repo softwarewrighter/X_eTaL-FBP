@@ -1,6 +1,6 @@
 number = 3
 slug = "connections"
-status = "pending"
+status = "in-progress"
 description = "Create libs/Connections (alias cn:) with just new-lib: a bounded FIFO connect..."
 role = "production"
 context_files = []

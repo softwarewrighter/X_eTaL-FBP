@@ -1,0 +1,28 @@
+#!/usr/bin/env xetal
+# Connections: the four overflow policies, each offered 6 IPs (11 to
+# 16) when 2 are queued (1 2) and the capacity is 5, so 3 fit.
+# Run with "just run Connections policies".
+"cn:" u_se< "Connections"
+"ch:" u_se< "Check"
+u:o_ver := { p ->
+  (c, _) := (cn:n_ew (5, p)) cn:s_end 1 2
+  c cn:s_end 11 12 13 14 15 16
+}
+(b, bBack) := u:o_ver cn:Block
+"Block queues what fits" ch:t_est 1 2 11 12 13 ch:i_s cn:c_ontents b
+"Block leaves the rest with the producer" ch:t_est 14 15 16 ch:i_s bBack
+"Block counts them blocked" ch:t_est 5 3 0 0 0 ch:i_s cn:c_ounts b
+(r, rBack) := u:o_ver cn:Reject
+"Reject queues what fits" ch:t_est 1 2 11 12 13 ch:i_s cn:c_ontents r
+"Reject refuses the rest" ch:t_est 14 15 16 ch:i_s rBack
+"Reject counts them rejected" ch:t_est 5 0 3 0 0 ch:i_s cn:c_ounts r
+(n, nBack) := u:o_ver cn:DropNewest
+"DropNewest queues what fits" ch:t_est 1 2 11 12 13 ch:i_s cn:c_ontents n
+"DropNewest gives nothing back" ch:t_est 0 ch:i_s t_ally nBack
+"DropNewest counts the rest dropped" ch:t_est 5 0 0 3 0 ch:i_s cn:c_ounts n
+(o, oBack) := u:o_ver cn:DropOldest
+"DropOldest keeps the newest" ch:t_est 12 13 14 15 16 ch:i_s cn:c_ontents o
+"DropOldest gives nothing back" ch:t_est 0 ch:i_s t_ally oBack
+"DropOldest admits all, drops the oldest" ch:t_est 8 0 0 3 0 ch:i_s cn:c_ounts o
+(big, _) := (cn:n_ew (3, cn:DropOldest)) cn:s_end r_ange 7
+"DropOldest offered more than its capacity keeps the last" ch:t_est 5 6 7 ch:i_s cn:c_ontents big

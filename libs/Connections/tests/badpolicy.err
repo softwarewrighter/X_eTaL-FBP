@@ -1,0 +1,9 @@
+error[bad-policy]: a policy is cn:Block, cn:DropOldest, cn:DropNewest or cn:Reject (1 to 4), not 7
+  --> ../src/Connections.xtl:38:25
+   |
+38 |   (pol < 1) | pol > 4 ? "bad-policy" []S_IGNAL @ f_ormat< "a policy is cn:Block, cn:DropOldest, cn:DropNewest or cn:Reject (1 to 4), not {pol}"
+   |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  ::: badpolicy.xtl:5:14
+   |
+ 5 | cn:d_escribe cn:n_ew (4, 7)
+   |              -------------- called from the program here

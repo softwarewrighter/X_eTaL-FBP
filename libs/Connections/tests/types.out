@@ -1,0 +1,18 @@
+l:Block : Int
+l:DropOldest : Int
+l:DropNewest : Int
+l:Reject : Int
+l:n_ew : (Num a, Num b, Num c) => (a, b) -> (a, b, Int, c)
+l:c_apacity : (Any a, Any b, Any c, Any d) => (a, b, c, d) -> a
+l:p_olicy : (Any a, Any b, Any c, Any d) => (a, b, c, d) -> b
+l:c_ontents : (Any a, Any b, Any c, Any d) => (a, b, c, d) -> c
+l:c_ounts : (Any a, Any b, Any c, Any d) => (a, b, c, d) -> d
+l:o_ccupancy : (Any a, Any b, Any d) => (a, b, c, d) -> Int
+l:r_oom : (Any a, Any c) => (Int, a, b, c) -> Int
+l:e_mpty? : (Any a, Any b, Any d, Truthy e) => (a, b, c, d) -> e
+l:f_ull? : (Any a, Any c, Truthy d) => (Int, a, b, c) -> d
+l:u_tilization : (Any a, Any c) => (Int, a, b, c) -> Float
+l:d_escribe : (Any b, Any d) => (a, b, c, d) -> Char
+l:s_end : (Int, Int, Int, Int) -> Int -> ((Int, Int, Int, Int), Int)
+l:r_eceive : (Any a, Any b) => Int -> (a, b, c, Int) -> ((a, b, c, Int), c)
+l:r_un : (Int, Int, Int) -> (Int, Int, Int, Int) -> ((Int, Int, Int, Int), Int)

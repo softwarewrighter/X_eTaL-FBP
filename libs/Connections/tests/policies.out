@@ -1,0 +1,13 @@
+ok: Block queues what fits
+ok: Block leaves the rest with the producer
+ok: Block counts them blocked
+ok: Reject queues what fits
+ok: Reject refuses the rest
+ok: Reject counts them rejected
+ok: DropNewest queues what fits
+ok: DropNewest gives nothing back
+ok: DropNewest counts the rest dropped
+ok: DropOldest keeps the newest
+ok: DropOldest gives nothing back
+ok: DropOldest admits all, drops the oldest
+ok: DropOldest offered more than its capacity keeps the last

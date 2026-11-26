@@ -1,0 +1,9 @@
+error[bad-capacity]: a connection's capacity is 1 or more, not 0
+  --> ../src/Connections.xtl:37:13
+   |
+37 |   cap < 1 ? "bad-capacity" []S_IGNAL @ f_ormat< "a connection's capacity is 1 or more, not {cap}"
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  ::: refused.xtl:5:14
+   |
+ 5 | cn:d_escribe cn:n_ew (0, cn:Block)
+   |              --------------------- called from the program here

@@ -1,0 +1,5 @@
+#!/usr/bin/env xetal
+# Connections: a policy that is not one of the four is refused.
+# Run with "just run Connections badpolicy".
+"cn:" u_se< "Connections"
+cn:d_escribe cn:n_ew (4, 7)
