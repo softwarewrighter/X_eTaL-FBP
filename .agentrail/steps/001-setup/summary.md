@@ -1,0 +1,1 @@
+Scaffolded the repo after X_eTaL-libraries: CLAUDE.md/AGENTS.md, README with copyright/license, CHANGES.md, justfile, scripts (pinned xetal 04c4c84 and X_eTaL-libraries c7e812e, xt, reg-rs test-libs, gate, spelling), docs/plan.md from the research PDF text and diagrams, docs/xetal-asks.md (X1), saga of 9 steps
