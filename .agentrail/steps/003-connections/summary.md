@@ -1,0 +1,1 @@
+libs/Connections: bounded FIFO with Block/DropOldest/DropNewest/Reject, counts, cn:r_un producer-consumer runs; p.47 acceptance passes exactly; 2 demos, docs, 8 baselines; README downstream-usage section
