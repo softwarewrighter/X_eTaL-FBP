@@ -1,8 +1,9 @@
 number = 2
 slug = "capability-audit"
-status = "in-progress"
+status = "completed"
 description = "Write docs/audit.md: probe the known-good X_eTaL (bin/xetal at XETAL_COMMIT) ..."
 role = "production"
 context_files = []
 created_at = "2026-11-25T16:20:48"
-commits = []
+completed_at = "2026-11-25T20:48:30"
+commits = ["2840cd23ac9b67546d85191019d82681cf20c92a"]

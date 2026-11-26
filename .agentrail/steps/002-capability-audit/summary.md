@@ -1,0 +1,1 @@
+docs/audit.md with 9 findings, each a probe in audit/ pinned by reg-rs (scripts/test-audit.sh in the gate); only gap is records/sums (X1), worked around with Int tables
