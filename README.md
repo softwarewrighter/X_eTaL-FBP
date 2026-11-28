@@ -24,6 +24,7 @@ repeatable, so a run is a test and its trace can be replayed.
 | Library | Alias | What |
 | ------- | ----- | ---- |
 | [Connections](libs/Connections/README.md) | `cn:` | bounded connections: a FIFO of IPs with a capacity and an overflow policy (block, drop oldest, drop newest, reject), and the producer-consumer backpressure experiment |
+| [Packets](libs/Packets/README.md) | `ip:` | information packets with identity: a table of kind, payload, owner and creation tick; ownership checked on every move; an audit against the connections; bracket IPs for substreams |
 
 ```
 "cn:" u_se< "Connections"
@@ -33,7 +34,7 @@ cn:d_escribe c                     # 3 of 5 slots occupied
 
 ## Status
 
-Early. Bounded connections are done; packets, networks, the
+Early. Bounded connections and packets are done; networks, the
 scheduler, standard components, a network notation and the first
 explorer follow in order. [`docs/plan.md`](docs/plan.md) has the architecture
 decisions and the roadmap, [`docs/xetal-asks.md`](docs/xetal-asks.md)

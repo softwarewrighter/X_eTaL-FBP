@@ -1,0 +1,17 @@
+#!/usr/bin/env xetal
+# Packets: what is refused, each by its error code: an IP that does
+# not exist, one already discarded, one moved by a place that does not
+# own it, one created by a place that is not a process.
+# Run with "just run Packets refusals".
+"ip:" u_se< "Packets"
+"ch:" u_se< "Check"
+u:c_ode := { ~t -> '{ @ -> _ := t; "none" } []T_RAP '{ e -> []R_ECOVER []E_CODE e } }
+(t, _) := (ip:Data, 1 2 3, 1, 0) ip:c_reate ip:e_mpty @
+"no IP 9" ch:t_est "no-packet" ch:i_s u:c_ode (9, 1, 2) ip:m_ove t
+"no IP 0" ch:t_est "no-packet" ch:i_s u:c_ode (0, 1, 2) ip:m_ove t
+"process 2 does not own IP 1" ch:t_est "not-owner" ch:i_s u:c_ode (1, 2, 3) ip:m_ove t
+"a discarded IP stays discarded" ch:t_est "dropped-packet" ch:i_s u:c_ode (1, 1, 2) ip:m_ove (1, 1) ip:d_iscard t
+"a connection does not create IPs" ch:t_est "not-a-process" ch:i_s u:c_ode (ip:Data, 5, -1, 0) ip:c_reate t
+"a legal move is not refused" ch:t_est "none" ch:i_s u:c_ode (1 2, 1, 2) ip:m_ove t
+# the message of a refusal, as a program stopping on one shows it:
+(1 2, 2, 3) ip:m_ove t

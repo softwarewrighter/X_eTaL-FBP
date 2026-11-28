@@ -1,0 +1,20 @@
+l:Data : Int
+l:Open : Int
+l:Close : Int
+l:e_mpty : Unit -> (Int, Float, Int, Int)
+l:c_ount : (Any b, Any c, Any d) => (a, b, c, d) -> Int
+l:a_tConnection : Num a => a -> a
+l:c_reate : (Num b, Num c) => (a, b, c, d) -> (a, Float, c, d) -> ((a, Float, c, d), Int)
+l:m_ove : (Num a, Any b, Any c, Any d) => (Int, a, a) -> (b, c, a, d) -> (b, c, a, d)
+l:d_iscard : (Num a, Any b, Any c, Any d) => (Int, a) -> (b, c, a, d) -> (b, c, a, d)
+l:k_inds : (Any b, Any c, Any d) => Int -> (a, b, c, d) -> a
+l:p_ayloads : (Any a, Any c, Any d) => Int -> (a, b, c, d) -> b
+l:o_wners : (Any a, Any b, Any d) => Int -> (a, b, c, d) -> c
+l:b_orn : (Any a, Any b, Any c) => Int -> (a, b, c, d) -> d
+l:o_wnedBy : (Eq a, Any b, Any c, Any d) => a -> (b, c, a, d) -> Int
+l:a_live : (Any a, Any b, Num c, Any d) => (a, b, c, d) -> Int
+l:d_escribe : Num b => Int -> (Int, a, b, c) -> Char
+l:a_udit : (Any a, Any b, Any c) => Box Int -> (a, b, Int, c) -> Box Char
+l:d_epths : Int -> Int
+l:b_alanced? : Int -> Int
+l:g_roups : Int -> Int

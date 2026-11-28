@@ -10,8 +10,13 @@ documentation, `plan` saga planning and reordering, `chore`
 agentrail bookkeeping (step complete, saga archive), `vendor` a move
 of the pinned X_eTaL or X_eTaL-libraries.
 
+## 2026-11-27
+
+- 17:18 `lib` Packets (step 4): information packets with identity, a table `(kinds, payloads, owners, born)`; `ip:c_reate` (by a process only), `ip:m_ove` and `ip:d_iscard` with ownership checked (no-packet, dropped-packet, not-owner refusals), readers per column, `ip:o_wnedBy`, `ip:a_live`, `ip:d_escribe`; `ip:a_udit` checks the table against the connections' contents (an IP in two places, queued but not owned, lost); bracket IPs (`ip:Open`, `ip:Close`) with `ip:d_epths`, `ip:b_alanced?`, `ip:g_roups`. Demo: five IPs through a Connections connection, audited at each stage. Ask X2: `w_ithout` and `e_nlist`, decided upstream, not in the pin (workarounds named). Plan: payloads are Floats until X1.
+
 ## 2026-11-26
 
+- 10:06 `chore` Complete step 3 (connections).
 - 10:05 `lib` Connections (step 3): bounded FIFO connections as values, `(capacity, policy, contents, counts)`; `cn:n_ew` (bad-capacity, bad-policy refusals), `cn:s_end`, `cn:r_eceive`, occupancy, room, utilization, `cn:d_escribe` ("3 of 5 slots occupied"), and the four overflow policies (Block, DropOldest, DropNewest, Reject) with counts admitted, blocked, rejected, dropped, delivered. `cn:r_un` runs a producer and a consumer at fixed rates per second; the research's p. 47 experiment is a test (occupancy 4 8 12 16 16 ..., 32 offered IPs not admitted at capacity 16, 16 at capacity 32). Demos: backpressure (table, bars, chart) and the four policies side by side. README: the library table and how another repository pins and imports these libraries; plan: when X_eTaL-microservices can build on them, the time model decided.
 
 ## 2026-11-25

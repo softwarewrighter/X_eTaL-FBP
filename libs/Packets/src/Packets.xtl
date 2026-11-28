@@ -1,0 +1,164 @@
+## Packets: information packets (IPs) with identity -- a table of every
+## IP's kind, payload, owner and creation tick, ownership checked, and
+## bracket IPs delimiting substreams.
+## Import it with an alias of your choice: "ip:" u_se< "Packets".
+## Put libs/Packets/src on XETAL_PATH ("just eval" does); the reference is libs/Packets/docs.
+## Names with l: are exported; those under h: are private to this file.
+##
+## In FBP an IP is a thing, not a value: it is created by a process,
+## owned by exactly one process or connection at a time, and in the end
+## sent on or discarded by whoever owns it. The table is the tuple
+## (kinds, payloads, owners, born), a column each, IP i in row i. An
+## owner is a process number (1, 2, ...), a connection as its number
+## negated (ip:a_tConnection), or 0 once the IP is discarded.
+
+### Kinds
+
+## A data IP: it carries a payload.
+l:Data := 1
+
+## An open bracket: the start of a substream.
+l:Open := 2
+
+## A close bracket: the end of a substream.
+l:Close := 3
+
+## No IPs: an empty vector of ids.
+h:none := 0 r_eshape 0
+
+### The table
+
+## ip:e_mpty @: a table with no IPs.
+l:e_mpty := { @ -> (h:none, 0 r_eshape 0.0, h:none, h:none) }
+
+## ip:c_ount t: how many IPs have been created.
+l:c_ount := { (k, _, _, _) -> t_ally k }
+
+## ip:a_tConnection c: the owner code of connection c, c negated.
+l:a_tConnection := { c -> n_eg c }
+
+## The kind's name.
+h:k_indName := { k -> k = l:Open ? "open"; k = l:Close ? "close"; "data" }
+
+## Who an owner code names, as text.
+h:w_ho := { w ->
+  w > 0 ? @ f_ormat< "process {w}"
+  w < 0 ? @ f_ormat< "connection {n_eg w}"
+  "nobody (discarded)"
+}
+
+### Creating, moving, discarding
+
+## (kinds, payloads, owner, tick) ip:c_reate t: (t, ids), one new IP
+## per payload, owned by process owner, created at tick; kinds is one
+## kind for all or one per payload. The owner must be a process
+## (error[not-a-process]).
+l:c_reate := { (kinds, pays, owner, tick) (k, p, o, b) ->
+  owner < 1 ? "not-a-process" []S_IGNAL @ f_ormat< "IPs are created by a process, not {h:w_ho owner}"
+  n := t_ally pays
+  ids := (t_ally k) + r_ange n
+  ((k c_at n r_eshape kinds, p c_at f_loat pays, o c_at n r_eshape owner, b c_at n r_eshape tick), ids)
+}
+
+## The first id of ids where bad is 1, as text.
+h:f_irstOf := { bad ids -> f_ormat f_irst bad r_eplicate ids }
+
+## Stop unless every IP of ids exists, is not discarded, and is owned
+## by owner.
+h:c_heck := { (ids, owner, o) ->
+  bad := (ids < 1) | ids > t_ally o
+  0 < '+ r_/ bad ? "no-packet" []S_IGNAL @ f_ormat< "there is no IP {bad h:f_irstOf ids}"
+  gone := 0 = ids s_elect o
+  0 < '+ r_/ gone ? "dropped-packet" []S_IGNAL @ f_ormat< "IP {gone h:f_irstOf ids} was discarded"
+  wrong := owner != ids s_elect o
+  0 < '+ r_/ wrong ? "not-owner" []S_IGNAL @ f_ormat< "IP {wrong h:f_irstOf ids} is owned by {h:w_ho f_irst wrong r_eplicate ids s_elect o}, not {h:w_ho owner}"
+  @
+}
+
+## (ids, from, to) ip:m_ove t: the IPs ids, owned by from, now owned
+## by to (sent into a connection, received from one). An IP that does
+## not exist is error[no-packet], one discarded error[dropped-packet],
+## one from does not own error[not-owner].
+l:m_ove := { (ids, from, to) (k, p, o, b) ->
+  _ := h:c_heck (ids, from, o)
+  (k, p, o a_mend (ids, to), b)
+}
+
+## (ids, owner) ip:d_iscard t: the IPs ids, owned by owner, discarded
+## (Morrison's drop): their owner becomes 0, for good.
+l:d_iscard := { (ids, owner) t -> (ids, owner, 0) l:m_ove t }
+
+### Reading it
+
+## ids ip:k_inds t: the IPs' kinds.
+l:k_inds := { ids (k, _, _, _) -> ids s_elect k }
+
+## ids ip:p_ayloads t: the IPs' payloads.
+l:p_ayloads := { ids (_, p, _, _) -> ids s_elect p }
+
+## ids ip:o_wners t: the IPs' owners.
+l:o_wners := { ids (_, _, o, _) -> ids s_elect o }
+
+## ids ip:b_orn t: the ticks the IPs were created at.
+l:b_orn := { ids (_, _, _, b) -> ids s_elect b }
+
+## w ip:o_wnedBy t: the IPs owner w holds.
+l:o_wnedBy := { w (_, _, o, _) -> w_here o = w }
+
+## ip:a_live t: the IPs not discarded.
+l:a_live := { (_, _, o, _) -> w_here o != 0 }
+
+## id ip:d_escribe t: "IP 1: data 2.5, owned by connection 4, created
+## at tick 0".
+l:d_escribe := { id t ->
+  (id < 1) | id > l:c_ount t ? "no-packet" []S_IGNAL @ f_ormat< "there is no IP {id}"
+  @ f_ormat< "IP {id}: {h:k_indName f_irst id l:k_inds t} {f_irst id l:p_ayloads t}, owned by {h:w_ho f_irst id l:o_wners t}, created at tick {f_irst id l:b_orn t}"
+}
+
+### Checking ownership against the connections
+
+## A box of boxed texts joined into one.
+h:r_aze := { b -> d_isclose '{ e_nclose (d_isclose _l) c_at d_isclose _r } r_/ b }
+
+## Each queued IP's connection, alongside the IPs themselves.
+h:w_here := { qs -> h:r_aze (e_nclose h:none) c_at '{ c -> (t_ally d_isclose c s_elect qs) r_eshape c } m_ap r_ange t_ally qs }
+
+## qs ip:a_udit t: what is wrong, a text per problem (none when all is
+## well), given qs, the contents of each connection, boxed, connection
+## c the c-th box: an IP queued in two places, an IP queued but not
+## owned by its connection, an IP its connection owns but does not
+## hold (lost).
+l:a_udit := { qs (_, _, o, _) ->
+  all := h:r_aze (e_nclose h:none) c_at qs
+  at := h:w_here qs
+  twice := u_nique ((all i_ndexOf all) != r_ange t_ally all) r_eplicate all
+  m1 := '{ i -> @ f_ormat< "IP {i} is queued in more than one place" } m_ap twice
+  wrong := ((n_eg at) != all s_elect o) r_eplicate r_ange t_ally all
+  m2 := '{ j -> @ f_ormat< "IP {j s_elect all} is in connection {j s_elect at} but owned by {h:w_ho f_irst (j s_elect all) s_elect o}" } m_ap wrong
+  held := (o < 0) & (n_eg o) <= t_ally qs
+  lost := (held & n_ot (r_ange t_ally o) m_ember? all) r_eplicate r_ange t_ally o
+  m3 := '{ i -> @ f_ormat< "IP {i} is owned by {h:w_ho i s_elect o} but not in it (lost)" } m_ap lost
+  m1 c_at m2 c_at m3
+}
+
+### Substreams
+
+## ip:d_epths kinds: the bracket depth after each IP of a stream: an
+## open bracket goes one deeper, a close bracket one back.
+l:d_epths := { ks -> '+ s_\ (ks = l:Open) - ks = l:Close }
+
+## ip:b_alanced? kinds: whether every open bracket of a stream is
+## closed, in order (never below depth 0, back to 0 at the end).
+l:b_alanced? := { ks ->
+  0 = t_ally ks ? 1
+  d := l:d_epths ks
+  (0 = f_irst -1 t_ake d) & 0 <= 'm_in r_/ d
+}
+
+## ip:g_roups kinds: for each IP of a stream, which outermost substream
+## it is in (1, 2, ...; its brackets included), 0 outside any.
+l:g_roups := { ks ->
+  d := l:d_epths ks
+  starts := (ks = l:Open) & d = 1
+  ((d > 0) | ks = l:Close) * '+ s_\ starts
+}

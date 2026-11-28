@@ -1,0 +1,23 @@
+-- created: 0 of 3 slots occupied
+IP 1: data 10.0, owned by process 1, created at tick 0
+IP 2: data 20.0, owned by process 1, created at tick 0
+IP 3: data 30.0, owned by process 1, created at tick 0
+IP 4: data 40.0, owned by process 1, created at tick 0
+IP 5: data 50.0, owned by process 1, created at tick 0
+audit: every IP in exactly one place
+-- sent; the two that did not fit stay with process 1: 3 of 3 slots occupied
+IP 1: data 10.0, owned by connection 1, created at tick 0
+IP 2: data 20.0, owned by connection 1, created at tick 0
+IP 3: data 30.0, owned by connection 1, created at tick 0
+IP 4: data 40.0, owned by process 1, created at tick 0
+IP 5: data 50.0, owned by process 1, created at tick 0
+audit: every IP in exactly one place
+-- process 2 received two and discarded one: 1 of 3 slots occupied
+IP 2: data 20.0, owned by process 2, created at tick 0
+IP 3: data 30.0, owned by connection 1, created at tick 0
+IP 4: data 40.0, owned by process 1, created at tick 0
+IP 5: data 50.0, owned by process 1, created at tick 0
+audit: every IP in exactly one place
+-- had process 2 not taken ownership, the audit would find:
+IP 1 is owned by connection 1 but not in it (lost)
+IP 2 is owned by connection 1 but not in it (lost)

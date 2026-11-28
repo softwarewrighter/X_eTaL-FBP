@@ -1,0 +1,7 @@
+ok: consistent
+ok: a lost IP is found
+IP 2 is owned by connection 1 but not in it (lost)
+ok: an IP in two places is found
+IP 3 is queued in more than one place
+IP 3 is in connection 1 but owned by connection 2
+ok: IPs a process still holds

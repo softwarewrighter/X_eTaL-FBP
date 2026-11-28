@@ -1,0 +1,13 @@
+#!/usr/bin/env xetal
+# Packets: bracket IPs delimiting substreams, and their nesting.
+# Run with "just run Packets brackets".
+"ip:" u_se< "Packets"
+"ch:" u_se< "Check"
+o := ip:Open; c := ip:Close; d := ip:Data
+s := o c_at d c_at d c_at o c_at d c_at c c_at c c_at d
+"depth after each IP" ch:t_est 1 1 1 2 2 1 0 0 ch:i_s ip:d_epths s
+"balanced" ch:t_est 1 ch:i_s ip:b_alanced? s
+"a close before its open is not" ch:t_est 0 ch:i_s ip:b_alanced? c c_at o
+"an unclosed open is not" ch:t_est 0 ch:i_s ip:b_alanced? o c_at d
+"no IPs is balanced" ch:t_est 1 ch:i_s ip:b_alanced? 0 r_eshape 0
+"the outermost substream of each IP, brackets included" ch:t_est 1 1 1 1 1 1 1 0 ch:i_s ip:g_roups s

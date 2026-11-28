@@ -1,0 +1,6 @@
+ok: no IP 9
+ok: no IP 0
+ok: process 2 does not own IP 1
+ok: a discarded IP stays discarded
+ok: a connection does not create IPs
+ok: a legal move is not refused

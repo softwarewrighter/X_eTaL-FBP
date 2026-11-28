@@ -1,0 +1,25 @@
+#!/usr/bin/env xetal
+# Packets: creating IPs, moving them between owners, discarding them,
+# and reading the table. Run with "just run Packets basics".
+"ip:" u_se< "Packets"
+"ch:" u_se< "Check"
+t0 := ip:e_mpty @
+"a new table has no IPs" ch:t_est 0 ch:i_s ip:c_ount t0
+(t1, ids) := (ip:Data, 2.5 3.5 4.5, 1, 0) ip:c_reate t0
+"ids are numbered from 1" ch:t_est 1 2 3 ch:i_s ids
+"created owned by their process" ch:t_est 1 1 1 ch:i_s ids ip:o_wners t1
+"payloads kept, as Floats" ch:t_est 2.5 3.5 4.5 ch:i_s ids ip:p_ayloads t1
+(t2, more) := (ip:Open c_at ip:Close, 7 7, 2, 3) ip:c_reate t1
+"more ids follow" ch:t_est 4 5 ch:i_s more
+"kinds" ch:t_est 1 1 1 2 3 ch:i_s (r_ange 5) ip:k_inds t2
+"creation ticks" ch:t_est 0 0 0 3 3 ch:i_s (r_ange 5) ip:b_orn t2
+t3 := (1 2, 1, ip:a_tConnection 4) ip:m_ove t2
+"moved into connection 4" ch:t_est -4 -4 1 ch:i_s ids ip:o_wners t3
+"owned by connection 4" ch:t_est 1 2 ch:i_s (ip:a_tConnection 4) ip:o_wnedBy t3
+t4 := (3, 1) ip:d_iscard t3
+"a discarded IP has no owner" ch:t_est 0 ch:i_s f_irst 3 ip:o_wners t4
+"alive: all but the discarded" ch:t_est 1 2 4 5 ch:i_s ip:a_live t4
+"moving none changes nothing" ch:t_est 1 ch:i_s t4 m_atch (0 r_eshape 0, 1, 2) ip:m_ove t4
+1 ip:d_escribe t4
+3 ip:d_escribe t4
+4 ip:d_escribe t4

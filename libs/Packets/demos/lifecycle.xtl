@@ -1,0 +1,29 @@
+#!/usr/bin/env xetal
+# The life of information packets: process 1 creates five IPs, sends
+# them into connection 1 (capacity 3, blocking), and keeps the two that
+# do not fit; process 2 receives two, discards one and still holds the
+# other. At each moment every IP has exactly one owner, and the audit
+# checks the table against what the connection holds.
+# Run with "just demo Packets lifecycle".
+"ip:" u_se< "Packets"
+"cn:" u_se< "Connections"
+u:s_how! := { (what, t, c) ->
+  _ := p_rint! "-- " c_at what c_at ": " c_at cn:d_escribe c
+  _ := '{ i -> p_rint! i ip:d_escribe t } m_ap ip:a_live t
+  problems := (e_nclose cn:c_ontents c) ip:a_udit t
+  0 = t_ally problems ? p_rint! "audit: every IP in exactly one place"
+  p_rint! @ f_ormat< "audit: {t_ally problems} problems"
+}
+(t1, ids) := (ip:Data, 10 20 30 40 50, 1, 0) ip:c_reate ip:e_mpty @
+c0 := cn:n_ew (3, cn:Block)
+_ := u:s_how! ("created", t1, c0)
+(c1, back) := c0 cn:s_end ids
+sent := (n_ot ids m_ember? back) r_eplicate ids
+t2 := (sent, 1, ip:a_tConnection 1) ip:m_ove t1
+_ := u:s_how! ("sent; the two that did not fit stay with process 1", t2, c1)
+(c2, got) := 2 cn:r_eceive c1
+t3 := (got, ip:a_tConnection 1, 2) ip:m_ove t2
+t4 := (1 t_ake got, 2) ip:d_iscard t3
+_ := u:s_how! ("process 2 received two and discarded one", t4, c2)
+_ := p_rint! "-- had process 2 not taken ownership, the audit would find:"
+_ := '{ b -> p_rint! d_isclose b } m_ap (e_nclose cn:c_ontents c2) ip:a_udit t2

@@ -1,0 +1,6 @@
+ok: depth after each IP
+ok: balanced
+ok: a close before its open is not
+ok: an unclosed open is not
+ok: no IPs is balanced
+ok: the outermost substream of each IP, brackets included

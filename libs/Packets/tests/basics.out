@@ -1,0 +1,15 @@
+ok: a new table has no IPs
+ok: ids are numbered from 1
+ok: created owned by their process
+ok: payloads kept, as Floats
+ok: more ids follow
+ok: kinds
+ok: creation ticks
+ok: moved into connection 4
+ok: owned by connection 4
+ok: a discarded IP has no owner
+ok: alive: all but the discarded
+ok: moving none changes nothing
+IP 1: data 2.5, owned by connection 4, created at tick 0
+IP 3: data 4.5, owned by nobody (discarded), created at tick 0
+IP 4: open 7.0, owned by process 2, created at tick 3

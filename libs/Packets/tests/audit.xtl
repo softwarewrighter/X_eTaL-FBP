@@ -1,0 +1,17 @@
+#!/usr/bin/env xetal
+# Packets: checking a table against the connections' contents: every
+# queued IP owned by its connection, none in two places, none lost.
+# Run with "just run Packets audit".
+"ip:" u_se< "Packets"
+"ch:" u_se< "Check"
+(t, ids) := (ip:Data, 10 20 30 40, 1, 0) ip:c_reate ip:e_mpty @
+t1 := (1 2, 1, ip:a_tConnection 1) ip:m_ove (3, 1, ip:a_tConnection 2) ip:m_ove t
+good := (e_nclose 1 2) c_at e_nclose 1 r_eshape 3
+"consistent" ch:t_est 0 ch:i_s t_ally good ip:a_udit t1
+lost := (e_nclose 1 r_eshape 1) c_at e_nclose 1 r_eshape 3
+"a lost IP is found" ch:t_est 1 ch:i_s t_ally lost ip:a_udit t1
+d_isclose f_irst lost ip:a_udit t1
+twice := (e_nclose 1 2 3) c_at e_nclose 1 r_eshape 3
+"an IP in two places is found" ch:t_est 2 ch:i_s t_ally twice ip:a_udit t1
+_ := '{ b -> p_rint! d_isclose b } m_ap twice ip:a_udit t1
+"IPs a process still holds" ch:t_est (1 r_eshape 4) ch:i_s 1 ip:o_wnedBy t1

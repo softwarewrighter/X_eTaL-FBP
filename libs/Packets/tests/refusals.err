@@ -1,0 +1,9 @@
+error[not-owner]: IP 1 is owned by process 1, not process 2
+  --> ../src/Packets.xtl:74:22
+   |
+74 |   0 < '+ r_/ wrong ? "not-owner" []S_IGNAL @ f_ormat< "IP {wrong h:f_irstOf ids} is owned by {h:w_ho f_irst wrong r_eplicate ids s_elect o}, not {h:w_ho owner}"
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  ::: refusals.xtl:17:1
+   |
+17 | (1 2, 2, 3) ip:m_ove t
+   | ---------------------- called from the program here
