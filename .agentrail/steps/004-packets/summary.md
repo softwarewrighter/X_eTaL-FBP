@@ -1,0 +1,1 @@
+libs/Packets: IP table with identity, create/move/discard with ownership refusals, audit against connections, bracket depths/groups; lifecycle demo; ask X2 (w_ithout, e_nlist not in pin)
