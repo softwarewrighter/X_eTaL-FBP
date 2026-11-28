@@ -1,0 +1,7 @@
+#!/usr/bin/env xetal
+# A10 (ask X3, a bug): a guard ending in an error makes a tuple part
+# that only passes through infer as Never: u:f_ shows (a, Never) where
+# u:g_, without the guard, shows (a, b). Programs still run; the types
+# a library pins are wrong. (A type probe: the baseline runs xetal type.)
+u:f_ := { (a, b) -> a < 0 ? "x" []S_IGNAL "y"; (a, b) }
+u:g_ := { (a, b) -> (a, b) }

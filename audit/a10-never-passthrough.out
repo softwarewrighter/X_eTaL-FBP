@@ -1,0 +1,2 @@
+u:f_ : Num a => (a, Never) -> (a, Never)
+u:g_ : (Any a, Any b) => (a, b) -> (a, b)

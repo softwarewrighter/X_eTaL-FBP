@@ -28,6 +28,7 @@ of Int columns and Int codes.
 | A7 | X_eTaL-libraries at the pin | Graphs (`g:a_djacency`, `g:r_each`) finds a feedback loop; Check reports `ok` / `FAIL` lines | `a7-libraries.xtl` |
 | A8 | A network DSL checked when the program is compiled | A `.xtlm` macro using X_eTaL-libraries' Strings reads `"gen.OUT -> dbl.IN [4]"` into its parts; a bad line is refused with `[]R_EJECT`, reported at the file, line and column of the text | `a8-macro.xtlm`, `a8-macro-use.xtl`, `a8-macro-refused.xtl` |
 | A9 | Drawing a run | Plot's `p:b_ars` draws occupancy in text; `p:c_hart!` and `[]G_RID` give SVG pictures written by `[]S_HOW` (to `work/draw`) | `a9-drawing.xtl` |
+| A10 | Types a library pins | A bug (ask X3): a guard ending in `[]S_IGNAL` makes a tuple part that only passes through infer as `Never`; programs run, pinned types are wrong | `a10-never-passthrough.xtl` |
 
 ## Speed
 

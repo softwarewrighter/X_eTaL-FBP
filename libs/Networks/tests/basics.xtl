@@ -1,0 +1,22 @@
+#!/usr/bin/env xetal
+# Networks: building a network of three processes, reading its tables.
+# Run with "just run Networks basics".
+"nw:" u_se< "Networks"
+"cn:" u_se< "Connections"
+"ch:" u_se< "Check"
+n0 := ("gen", "", "OUT") nw:p_rocess nw:e_mpty @
+n1 := ("dbl", "IN", "OUT ERR?") nw:p_rocess n0
+n2 := ("show", "IN CTRL?", "") nw:p_rocess n1
+n3 := ("gen.OUT", "dbl.IN", 4, cn:Block) nw:c_onnect n2
+n := ("dbl.OUT", "show.IN", 2, cn:DropOldest) nw:c_onnect n3
+"three processes" ch:t_est 3 ch:i_s t_ally nw:p_rocesses n
+"processes by name" ch:t_est 2 ch:i_s "dbl" nw:p_rocessNumber n
+nw:p_orts n
+"directions" ch:t_est 2 1 2 2 1 1 ch:i_s nw:d_irections n
+nw:c_onnections n
+nw:l_isting n
+"no problems: ERR and CTRL are optional" ch:t_est 0 ch:i_s t_ally nw:p_roblems n
+"sources" ch:t_est (1 r_eshape 1) ch:i_s nw:s_ources n
+"sinks" ch:t_est (1 r_eshape 3) ch:i_s nw:s_inks n
+"acyclic" ch:t_est 1 ch:i_s nw:a_cyclic? n
+nw:a_djacency n

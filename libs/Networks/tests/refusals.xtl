@@ -1,0 +1,23 @@
+#!/usr/bin/env xetal
+# Networks: what is refused while building, each by its error code.
+# Run with "just run Networks refusals".
+"nw:" u_se< "Networks"
+"ch:" u_se< "Check"
+u:c_ode := { ~t -> '{ @ -> _ := t; "none" } []T_RAP '{ e -> []R_ECOVER []E_CODE e } }
+n0 := ("a", "IN", "OUT") nw:p_rocess ("b", "IN", "OUT") nw:p_rocess nw:e_mpty @
+"a process named twice" ch:t_est "duplicate-process" ch:i_s u:c_ode t_ally nw:p_rocesses ("a", "", "") nw:p_rocess n0
+"a port named twice" ch:t_est "duplicate-port" ch:i_s u:c_ode t_ally nw:p_rocesses ("c", "X X", "") nw:p_rocess n0
+"a port name with a dot" ch:t_est "bad-name" ch:i_s u:c_ode t_ally nw:p_rocesses ("d", "X.Y", "") nw:p_rocess n0
+"no process c" ch:t_est "no-process" ch:i_s u:c_ode t_ally nw:c_onnections ("c.OUT", "b.IN", 1, 1) nw:c_onnect n0
+"no port a.ERR" ch:t_est "no-port" ch:i_s u:c_ode t_ally nw:c_onnections ("a.ERR", "b.IN", 1, 1) nw:c_onnect n0
+"not process.PORT" ch:t_est "bad-endpoint" ch:i_s u:c_ode t_ally nw:c_onnections ("aOUT", "b.IN", 1, 1) nw:c_onnect n0
+"from an input" ch:t_est "bad-direction" ch:i_s u:c_ode t_ally nw:c_onnections ("a.IN", "b.IN", 1, 1) nw:c_onnect n0
+"into an output" ch:t_est "bad-direction" ch:i_s u:c_ode t_ally nw:c_onnections ("a.OUT", "b.OUT", 1, 1) nw:c_onnect n0
+"capacity 0" ch:t_est "bad-capacity" ch:i_s u:c_ode t_ally nw:c_onnections ("a.OUT", "b.IN", 0, 1) nw:c_onnect n0
+"policy 9" ch:t_est "bad-policy" ch:i_s u:c_ode t_ally nw:c_onnections ("a.OUT", "b.IN", 1, 9) nw:c_onnect n0
+n1 := ("a.OUT", "b.IN", 1, 1) nw:c_onnect n0
+"an output feeds one connection" ch:t_est "output-taken" ch:i_s u:c_ode t_ally nw:c_onnections ("a.OUT", "a.IN", 1, 1) nw:c_onnect n1
+"an input may be fed twice (a merge)" ch:t_est "none" ch:i_s u:c_ode t_ally nw:c_onnections ("b.OUT", "b.IN", 1, 1) nw:c_onnect n1
+"unconnected required ports are problems" ch:t_est 2 ch:i_s t_ally nw:p_roblems n1
+_ := '{ b -> p_rint! d_isclose b } m_ap nw:p_roblems n1
+("a.ERR", "b.IN", 1, 1) nw:c_onnect n0

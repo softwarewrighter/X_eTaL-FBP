@@ -1,0 +1,2 @@
+command = "../../../scripts/xt type ../src/Networks.xtl"
+exit_code = 0

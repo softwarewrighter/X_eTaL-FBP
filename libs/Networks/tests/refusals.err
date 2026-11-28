@@ -1,0 +1,9 @@
+error[no-port]: there is no port a.ERR
+  --> ../src/Networks.xtl:71:21
+   |
+71 |   0 = t_ally hits ? "no-port" []S_IGNAL @ f_ormat< "there is no port {s}"
+   |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  ::: refusals.xtl:23:1
+   |
+23 | ("a.ERR", "b.IN", 1, 1) nw:c_onnect n0
+   | -------------------------------------- called from the program here

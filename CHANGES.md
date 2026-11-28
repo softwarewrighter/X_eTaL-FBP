@@ -12,6 +12,8 @@ of the pinned X_eTaL or X_eTaL-libraries.
 
 ## 2026-11-27
 
+- 10:58 `lib` Networks (step 5): networks as data, `(names, ports, connections)`; `nw:p_rocess` with ports from words (`"IN CTRL?"`, `?` optional) and `nw:c_onnect` from `process.PORT` to `process.PORT`, refusing duplicate names, bad names and endpoints, unknown processes and ports, wrong directions, bad capacities and policies, and a second connection from one output (inputs may merge); readers and `nw:l_isting`; `nw:p_roblems` (unconnected required ports, isolated processes); analysis through X_eTaL-libraries' Graphs: adjacency, feedback loops, acyclic?, sources, sinks, reachability. The research's p. 52 order-processing network is a test (accepted, not a DAG, all but audit on a loop) and a demo. Ask X3 (a bug): a guard ending in `[]S_IGNAL` makes a pass-through tuple part infer as `Never`; probe A10 pins it (scripts/test-audit.sh runs `xetal type` for type probes).
+- 17:18 `chore` Complete step 4 (packets).
 - 17:18 `lib` Packets (step 4): information packets with identity, a table `(kinds, payloads, owners, born)`; `ip:c_reate` (by a process only), `ip:m_ove` and `ip:d_iscard` with ownership checked (no-packet, dropped-packet, not-owner refusals), readers per column, `ip:o_wnedBy`, `ip:a_live`, `ip:d_escribe`; `ip:a_udit` checks the table against the connections' contents (an IP in two places, queued but not owned, lost); bracket IPs (`ip:Open`, `ip:Close`) with `ip:d_epths`, `ip:b_alanced?`, `ip:g_roups`. Demo: five IPs through a Connections connection, audited at each stage. Ask X2: `w_ithout` and `e_nlist`, decided upstream, not in the pin (workarounds named). Plan: payloads are Floats until X1.
 
 ## 2026-11-26

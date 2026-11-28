@@ -1,0 +1,40 @@
+#!/usr/bin/env xetal
+# The order-processing network of the research (p. 52) as data: six
+# processes with named ports, ten bounded connections, feedback paths
+# (it is not a DAG), and what the analysis says about it. Then the same
+# network with the audit process left out, and what validation finds.
+# Run with "just demo Networks order".
+"nw:" u_se< "Networks"
+"cn:" u_se< "Connections"
+"t:" u_se< "Strings"
+u:p_rocesses := { n ->
+  p := ("gateway", "ERROR RESULT", "OUT") nw:p_rocess n
+  p2 := ("validate", "IN", "OK REJECT") nw:p_rocess p
+  p3 := ("inventory", "IN UNDO", "OUT") nw:p_rocess p2
+  p4 := ("payment", "IN", "OUT") nw:p_rocess p3
+  ("saga", "ORDER STOCK PAYMENT", "RESERVE CHARGE COMPENSATE COMPLETE EVENT") nw:p_rocess p4
+}
+u:w_ire := { (from, to, cap) n -> (from, to, cap, cn:Block) nw:c_onnect n }
+u:c_ore := { n ->
+  c1 := ("gateway.OUT", "validate.IN", 64) u:w_ire n
+  c2 := ("validate.OK", "saga.ORDER", 32) u:w_ire c1
+  c3 := ("validate.REJECT", "gateway.ERROR", 16) u:w_ire c2
+  c4 := ("saga.RESERVE", "inventory.IN", 32) u:w_ire c3
+  c5 := ("inventory.OUT", "saga.STOCK", 32) u:w_ire c4
+  c6 := ("saga.CHARGE", "payment.IN", 32) u:w_ire c5
+  c7 := ("payment.OUT", "saga.PAYMENT", 32) u:w_ire c6
+  c8 := ("saga.COMPENSATE", "inventory.UNDO", 16) u:w_ire c7
+  ("saga.COMPLETE", "gateway.RESULT", 64) u:w_ire c8
+}
+n := ("saga.EVENT", "audit.IN", 128) u:w_ire u:c_ore ("audit", "IN", "") nw:p_rocess u:p_rocesses nw:e_mpty @
+_ := '{ b -> p_rint! d_isclose b } m_ap nw:l_isting n
+names := nw:p_rocesses n
+_ := p_rint! @ f_ormat< "{t_ally names} processes, {t_ally nw:c_onnections n} connections, {'+ r_/ 5 s_elect_2 nw:c_onnections n} IPs of buffering"
+_ := p_rint! "on a feedback loop: " c_at " " t:j_oin (nw:l_oops n) r_eplicate names
+_ := p_rint! "sinks: " c_at " " t:j_oin (nw:s_inks n) s_elect names
+_ := p_rint! "acyclic: " c_at f_ormat nw:a_cyclic? n
+_ := p_rint! "who feeds whom (row feeds column):"
+_ := p_rint! nw:a_djacency n
+_ := []S_HOW []G_RID nw:a_djacency n
+_ := p_rint! "-- without the audit process, validation finds:"
+_ := '{ b -> p_rint! d_isclose b } m_ap nw:p_roblems u:c_ore u:p_rocesses nw:e_mpty @

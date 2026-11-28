@@ -1,0 +1,20 @@
+l:In : Int
+l:Out : Int
+l:e_mpty : Num a => Unit -> (Box Char, (Int, Box Char, Int, Int), a)
+l:p_rocess : (Char, Char, Char) -> (Box Char, (Int, Box Char, Int, Int), Never) -> (Box Char, (Int, Box Char, Int, Int), Never)
+l:c_onnect : (Char, Char, Int, Int) -> (Box Char, (Int, Box Char, Int, Never), Int) -> (Box Char, (Int, Box Char, Int, Never), Int)
+l:p_rocesses : (Any a, Any b, Any c) => (a, b, c) -> a
+l:p_rocessNumber : (Eq a, Any b, Any c) => a -> (Box a, b, c) -> Int
+l:p_orts : (Any a, Any b, Any c) => (Box Char, (Int, Box Char, a, b), c) -> Box Char
+l:p_ortProcesses : (Any a, Any b, Any c, Any d, Any e, Any f) => (a, (b, c, d, e), f) -> b
+l:d_irections : (Any a, Any b, Any c, Any d, Any e, Any f) => (a, (b, c, d, e), f) -> d
+l:o_ptional : (Any a, Any b, Any c, Any d, Any e, Any f) => (a, (b, c, d, e), f) -> e
+l:c_onnections : (Any a, Any b, Any c) => (a, b, c) -> c
+l:l_isting : (Any a, Any b) => (Box Char, (Int, Box Char, a, b), Int) -> Box Char
+l:p_roblems : (Any a, Truthy b) => (Box Char, (Int, Box Char, a, b), Int) -> Box Char
+l:a_djacency : Any b => (a, b, Int) -> Int
+l:l_oops : (Any b, Truthy c) => (a, b, Int) -> c
+l:a_cyclic? : (Any b, Truthy c) => (a, b, Int) -> c
+l:s_ources : Any b => (a, b, Int) -> Int
+l:s_inks : Any b => (a, b, Int) -> Int
+l:r_eachable : (Any b, Truthy c) => Int -> (a, b, Int) -> c

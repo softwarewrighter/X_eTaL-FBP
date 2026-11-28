@@ -1,6 +1,6 @@
 number = 5
 slug = "networks"
-status = "pending"
+status = "in-progress"
 description = "Create libs/Networks (alias nw:): processes, ports (name, direction) and conn..."
 role = "production"
 context_files = []

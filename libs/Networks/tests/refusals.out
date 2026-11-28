@@ -1,0 +1,15 @@
+ok: a process named twice
+ok: a port named twice
+ok: a port name with a dot
+ok: no process c
+ok: no port a.ERR
+ok: not process.PORT
+ok: from an input
+ok: into an output
+ok: capacity 0
+ok: policy 9
+ok: an output feeds one connection
+ok: an input may be fed twice (a merge)
+ok: unconnected required ports are problems
+b.OUT is not connected
+a.IN is not connected

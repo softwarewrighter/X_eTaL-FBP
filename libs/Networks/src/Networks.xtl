@@ -1,0 +1,181 @@
+## Networks: FBP networks as data -- processes, their named ports and
+## the bounded connections between them, as tables, checked while
+## they are built, then validated and analyzed.
+## Import it with an alias of your choice: "nw:" u_se< "Networks".
+## Put libs/Networks/src on XETAL_PATH ("just eval" does); the reference is libs/Networks/docs.
+## Names with l: are exported; those under h: are private to this file.
+##
+## A network is the tuple (names, ports, connections): names the
+## processes' names (boxed), process k the k-th; ports the columns
+## (process, name, direction, optional), port i the i-th row; and
+## connections an Int matrix, a row per connection: from-process,
+## from-port, to-process, to-port, capacity, overflow policy (the
+## Connections library's 1 to 4). Components never name their
+## neighbors: the network does. As in classical FBP an output port
+## feeds one connection, and an input port may be fed by several (a
+## merge).
+
+"t:" u_se< "Strings"
+"g:" u_se< "Graphs"
+
+### Directions
+
+## An input port.
+l:In := 1
+
+## An output port.
+l:Out := 2
+
+## No names, no ids.
+h:noNames := 0 r_eshape e_nclose ""
+h:none := 0 r_eshape 0
+
+### Building
+
+## nw:e_mpty @: a network with no processes.
+l:e_mpty := { @ -> (h:noNames, (h:none, h:noNames, h:none, h:none), 0 6 r_eshape 0) }
+
+## Whether a name cannot be used: empty, or holding a dot or a blank.
+h:b_adName? := { s -> (0 = t_ally s) | 0 < '+ r_/ s m_ember? ". " }
+
+## A port word without its optional mark.
+h:b_are := { w -> (n_eg h:o_pt? w) d_rop w }
+
+## Whether a port word ends in the optional mark ?.
+h:o_pt? := { w -> "?" m_atch -1 t_ake w }
+
+## (name, ins, outs) nw:p_rocess n: n with a process added, its input
+## and output ports named by the words of ins and outs ("IN CTRL?"); a
+## port ending in ? is optional. A name used twice is
+## error[duplicate-process] or error[duplicate-port], one empty or
+## holding a dot or a blank error[bad-name].
+l:p_rocess := { (name, ins, outs) (ns, (pp, pn, pd, po), cm) ->
+  h:b_adName? name ? "bad-name" []S_IGNAL @ f_ormat< "a process name is not empty and has no dot or blank: {name}"
+  (ns i_ndexOf e_nclose name) <= t_ally ns ? "duplicate-process" []S_IGNAL @ f_ormat< "there is already a process {name}"
+  ws := (t:w_ords ins) c_at t:w_ords outs
+  ds := ((t_ally t:w_ords ins) r_eshape l:In) c_at (t_ally t:w_ords outs) r_eshape l:Out
+  bare := '{ w -> h:b_are d_isclose w } m_ap ws
+  0 < '+ r_/ '{ w -> h:b_adName? d_isclose w } e_ach bare ? "bad-name" []S_IGNAL @ f_ormat< "a port name is not empty and has no dot or blank, in process {name}"
+  (t_ally bare) != t_ally u_nique bare ? "duplicate-port" []S_IGNAL @ f_ormat< "process {name} names a port twice"
+  opt := '{ w -> h:o_pt? d_isclose w } e_ach ws
+  ((ns c_at e_nclose name), (pp c_at (t_ally bare) r_eshape 1 + t_ally ns, pn c_at bare, pd c_at ds, po c_at opt), cm)
+}
+
+## The port named by "process.PORT", which must have direction dir.
+h:e_ndpoint := { (s, dir) (ns, (pp, pn, pd, _), _) ->
+  dots := w_here s = f_irst "."
+  1 != t_ally dots ? "bad-endpoint" []S_IGNAL @ f_ormat< "write process.PORT, not {s}"
+  k := ns i_ndexOf e_nclose (f_irst dots - 1) t_ake s
+  k > t_ally ns ? "no-process" []S_IGNAL @ f_ormat< "no process is named {(f_irst dots - 1) t_ake s}, in {s}"
+  hits := w_here (pp = k) & '{ b -> (d_isclose b) m_atch (f_irst dots) d_rop s } e_ach pn
+  0 = t_ally hits ? "no-port" []S_IGNAL @ f_ormat< "there is no port {s}"
+  i := f_irst hits
+  (dir = l:Out) & l:In = i s_elect pd ? "bad-direction" []S_IGNAL @ f_ormat< "{s} is an input port: a connection starts at an output port"
+  (dir = l:In) & l:Out = i s_elect pd ? "bad-direction" []S_IGNAL @ f_ormat< "{s} is an output port: a connection ends at an input port"
+  i
+}
+
+## (from, to, capacity, policy) nw:c_onnect n: n with a connection
+## from the output port from to the input port to, both written
+## "process.PORT". Refused: an endpoint not so written
+## (error[bad-endpoint]), naming no process (error[no-process]) or no
+## port (error[no-port]), the wrong way round (error[bad-direction]), a
+## capacity below 1 (error[bad-capacity]), a policy not 1 to 4
+## (error[bad-policy]), an output already connected
+## (error[output-taken]).
+l:c_onnect := { (from, to, cap, pol) n ->
+  (ns, ps, cm) := n
+  (pp, _, _, _) := ps
+  i := (from, l:Out) h:e_ndpoint n
+  j := (to, l:In) h:e_ndpoint n
+  cap < 1 ? "bad-capacity" []S_IGNAL @ f_ormat< "a connection's capacity is 1 or more, not {cap}, in {from} -> {to}"
+  (pol < 1) | pol > 4 ? "bad-policy" []S_IGNAL @ f_ormat< "a policy is 1 to 4 (the Connections library's), not {pol}, in {from} -> {to}"
+  i m_ember? 2 s_elect_2 cm ? "output-taken" []S_IGNAL @ f_ormat< "{from} already feeds a connection: an output port feeds one (copy IPs with a component to send them two ways)"
+  row := (i s_elect pp) c_at i c_at (j s_elect pp) c_at j c_at cap c_at pol
+  (ns, ps, cm c_at 1 6 r_eshape row)
+}
+
+### Reading
+
+## nw:p_rocesses n: the processes' names, process k the k-th.
+l:p_rocesses := { (ns, _, _) -> ns }
+
+## name nw:p_rocessNumber n: the process's number
+## (error[no-process] when there is none).
+l:p_rocessNumber := { name (ns, _, _) ->
+  k := ns i_ndexOf e_nclose name
+  k > t_ally ns ? "no-process" []S_IGNAL @ f_ormat< "no process is named {name}"
+  k
+}
+
+## i h:p_ortName n: port i as "process.PORT".
+h:p_ortName := { i (ns, (pp, pn, _, _), _) -> (d_isclose (i s_elect pp) s_elect ns) c_at "." c_at d_isclose i s_elect pn }
+
+## nw:p_orts n: every port as "process.PORT", port i the i-th.
+l:p_orts := { n ->
+  (_, (pp, _, _, _), _) := n
+  '{ i -> i h:p_ortName n } m_ap r_ange t_ally pp
+}
+
+## nw:p_ortProcesses n: each port's process.
+l:p_ortProcesses := { (_, (pp, _, _, _), _) -> pp }
+
+## nw:d_irections n: each port's direction, nw:In or nw:Out.
+l:d_irections := { (_, (_, _, pd, _), _) -> pd }
+
+## nw:o_ptional n: whether each port is optional.
+l:o_ptional := { (_, (_, _, _, po), _) -> po }
+
+## nw:c_onnections n: the connections, a row each: from-process,
+## from-port, to-process, to-port, capacity, policy.
+l:c_onnections := { (_, _, cm) -> cm }
+
+## nw:l_isting n: each connection as text, "gen.OUT -> dbl.IN [4]".
+l:l_isting := { n ->
+  cm := l:c_onnections n
+  '{ r -> row := r s_elect cm; @ f_ormat< "{(2 s_elect row) h:p_ortName n} -> {(4 s_elect row) h:p_ortName n} [{5 s_elect row}]" } m_ap r_ange t_ally cm
+}
+
+### Validating
+
+## nw:p_roblems n: what makes n incomplete, a text each (none when it
+## is complete): a required port not connected, a process connected to
+## nothing.
+l:p_roblems := { n ->
+  (ns, (pp, _, _, po), cm) := n
+  used := (2 s_elect_2 cm) c_at 4 s_elect_2 cm
+  idle := ((n_ot po) & n_ot (r_ange t_ally pp) m_ember? used) r_eplicate r_ange t_ally pp
+  m1 := '{ i -> @ f_ormat< "{i h:p_ortName n} is not connected" } m_ap idle
+  alone := (n_ot (r_ange t_ally ns) m_ember? (1 s_elect_2 cm) c_at 3 s_elect_2 cm) r_eplicate r_ange t_ally ns
+  m2 := '{ k -> @ f_ormat< "process {d_isclose k s_elect ns} is connected to nothing" } m_ap alone
+  m1 c_at m2
+}
+
+### Analyzing
+
+## nw:a_djacency n: the processes' adjacency matrix: item i j is 1
+## when a connection runs from process i to process j.
+l:a_djacency := { n ->
+  cm := l:c_onnections n
+  (t_ally l:p_rocesses n) g:a_djacency (2 c_at t_ally cm) r_eshape (1 s_elect_2 cm) c_at 3 s_elect_2 cm
+}
+
+## nw:l_oops n: whether each process is on a feedback loop (it can
+## reach itself through connections).
+l:l_oops := { n ->
+  r := g:r_each l:a_djacency n
+  '{ i -> i s_elect i s_elect r } e_ach r_ange t_ally r
+}
+
+## nw:a_cyclic? n: whether no process is on a feedback loop.
+l:a_cyclic? := { n -> 0 = '+ r_/ l:l_oops n }
+
+## nw:s_ources n: the processes no connection feeds.
+l:s_ources := { n -> w_here 0 = g:i_nDegree l:a_djacency n }
+
+## nw:s_inks n: the processes that feed no connection.
+l:s_inks := { n -> w_here 0 = g:o_utDegree l:a_djacency n }
+
+## p nw:r_eachable n: whether IPs from process p can reach each
+## process through one or more connections.
+l:r_eachable := { p n -> p s_elect g:r_each l:a_djacency n }

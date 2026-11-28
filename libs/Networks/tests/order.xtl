@@ -1,0 +1,34 @@
+#!/usr/bin/env xetal
+# Networks: the order-processing network of the research (p. 52): six
+# processes, several input ports each, feedback paths, a capacity per
+# connection. Not a DAG. Run with "just run Networks order".
+"nw:" u_se< "Networks"
+"ch:" u_se< "Check"
+p := ("gateway", "ERROR RESULT", "OUT") nw:p_rocess nw:e_mpty @
+p2 := ("validate", "IN", "OK REJECT") nw:p_rocess p
+p3 := ("inventory", "IN UNDO", "OUT") nw:p_rocess p2
+p4 := ("payment", "IN", "OUT") nw:p_rocess p3
+p5 := ("saga", "ORDER STOCK PAYMENT", "RESERVE CHARGE COMPENSATE COMPLETE EVENT") nw:p_rocess p4
+p6 := ("audit", "IN", "") nw:p_rocess p5
+u:w_ire := { (from, to, cap) n -> (from, to, cap, 1) nw:c_onnect n }
+c1 := ("gateway.OUT", "validate.IN", 64) u:w_ire p6
+c2 := ("validate.OK", "saga.ORDER", 32) u:w_ire c1
+c3 := ("validate.REJECT", "gateway.ERROR", 16) u:w_ire c2
+c4 := ("saga.RESERVE", "inventory.IN", 32) u:w_ire c3
+c5 := ("inventory.OUT", "saga.STOCK", 32) u:w_ire c4
+c6 := ("saga.CHARGE", "payment.IN", 32) u:w_ire c5
+c7 := ("payment.OUT", "saga.PAYMENT", 32) u:w_ire c6
+c8 := ("saga.COMPENSATE", "inventory.UNDO", 16) u:w_ire c7
+c9 := ("saga.COMPLETE", "gateway.RESULT", 64) u:w_ire c8
+n := ("saga.EVENT", "audit.IN", 128) u:w_ire c9
+nw:l_isting n
+"accepted: every port connected" ch:t_est 0 ch:i_s t_ally nw:p_roblems n
+"ten connections" ch:t_est 10 ch:i_s t_ally nw:c_onnections n
+"not a DAG" ch:t_est 0 ch:i_s nw:a_cyclic? n
+"on a feedback loop: all but audit" ch:t_est 1 1 1 1 1 0 ch:i_s nw:l_oops n
+"no source: the gateway is fed back" ch:t_est 0 ch:i_s t_ally nw:s_ources n
+"audit is the sink" ch:t_est (1 r_eshape 6) ch:i_s nw:s_inks n
+"everything is reachable from the gateway" ch:t_est 1 1 1 1 1 1 ch:i_s 1 nw:r_eachable n
+"nothing from audit" ch:t_est 0 0 0 0 0 0 ch:i_s 6 nw:r_eachable n
+"total buffering" ch:t_est 448 ch:i_s '+ r_/ 5 s_elect_2 nw:c_onnections n
+nw:a_djacency n

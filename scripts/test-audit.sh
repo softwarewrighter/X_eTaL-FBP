@@ -2,7 +2,8 @@
 # The capability audit's probes (audit/*.xtl, docs/audit.md) pinned
 # with reg-rs, audit/ being their REG_RS_DATA_DIR: each NAME.xtl has
 # NAME.rgt running "scripts/xt run NAME.xtl" (a probe that shows a
-# refusal pins its error and exit status), and a probe that calls a
+# refusal pins its error and exit status; a probe saying "(A type
+# probe" runs "scripts/xt type NAME.xtl" instead), and a probe that calls a
 # macro also pins "scripts/xt expand" as expand-NAME.rgt. When the pin
 # moves, a changed baseline is a changed capability: update
 # docs/audit.md and docs/xetal-asks.md with it. XETAL_BLESS=1 creates
@@ -16,7 +17,8 @@ cd "$root/audit"
 fail=0; wanted=()
 for p in *.xtl; do
   b="${p%.xtl}"
-  wanted+=("$b|../scripts/xt run $p")
+  # a probe saying "(A type probe" pins its types, xetal type
+  if grep -q '(A type probe' "$p"; then wanted+=("$b|../scripts/xt type $p"); else wanted+=("$b|../scripts/xt run $p"); fi
   grep -qE '[a-z][a-z0-9]*:[a-z]_[A-Za-z0-9]*<' "$p" && wanted+=("expand-$b|../scripts/xt expand $p")
 done
 for w in "${wanted[@]}"; do
