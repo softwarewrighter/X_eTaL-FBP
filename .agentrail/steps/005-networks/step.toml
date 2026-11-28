@@ -1,8 +1,9 @@
 number = 5
 slug = "networks"
-status = "in-progress"
+status = "completed"
 description = "Create libs/Networks (alias nw:): processes, ports (name, direction) and conn..."
 role = "production"
 context_files = []
 created_at = "2026-11-25T16:20:49"
-commits = []
+completed_at = "2026-11-28T10:58:53"
+commits = ["d9d0db503c90d03f4dfb7701e486e888752c2ac6"]

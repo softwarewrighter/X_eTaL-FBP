@@ -1,0 +1,1 @@
+libs/Networks: networks as tables with build-time refusals, validation, Graphs-based analysis; p.52 network accepted and analyzed (test+demo); ask X3 Never-inference bug with audit probe A10
